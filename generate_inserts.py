@@ -8,6 +8,18 @@ import random #necessary import
 
 fake = Faker()
 
+MAJORS = [
+    "Computer Science", "Information Technology", "Software Engineering",
+    "Electrical Engineering", "Mechanical Engineering", "Civil Engineering",
+    "Business Administration", "Accounting", "Economics", "Mathematics",
+    "Physics", "Biology", "Chemistry", "Psychology", "Law"
+]
+
+DEPARTMENTS = [
+    "Computer Science", "Mathematics", "Physics", "Engineering",
+    "Business", "Biology", "Chemistry", "Law", "Economics"
+]
+
 #configuration
 NUM_STUDENTS = 100_000 #constraint
 NUM_COURSES = 200 #constraint 
@@ -20,7 +32,7 @@ BATCH_SIZE = 1000 #performance control
 user_file = open("users.sql", "w", encoding="utf-8")
 course_file = open("courses.sql", "w", encoding="utf-8")
 enrollment_file = open("enrollments.sql", "w", encoding="utf-8")
-extra_file = open("extras.sql", "w", encoding="utf-8") #for assignments, submissions, forums/threads
+extra_file = open("extras.sql", "w", encoding="utf-8")
 
 #batch insert helper
 def batch_insert(file, table, columns, values):
@@ -39,10 +51,15 @@ def batch_insert(file, table, columns, values):
 #1.generate users & roles 
 print("-- USERS", file=user_file)
 
-user_id = 1
+user_id = 1  # Users table starts at 1
+student_id = 111000001  # Students table starts here
+lecturer_id = 222000001  # Lecturer_Course_Maintainers starts here
+admin_id = 333000001  # Admins table starts here
+
 student_ids = []
 lecturer_ids = []
-admin_ids = [] 
+admin_ids = []
+user_ids = []  # track all user_ids for forum/thread author reference
 
 user_values = []
 student_values = []
@@ -58,11 +75,13 @@ for i in range(NUM_STUDENTS):
         f"({user_id}, '{name}', '{email}', 'pass', 'student', NOW())"
     )
     student_values.append(
-        f"({user_id}, {user_id}, '{fake.word()}')"
+        f"({student_id}, {user_id}, '{random.choice(MAJORS)}')"
     )
 
-    student_ids.append(user_id)
+    student_ids.append(student_id)
+    user_ids.append(user_id)
     user_id += 1
+    student_id += 1
 
     #flush batch - delay buffering
     if len(user_values) >= BATCH_SIZE:
@@ -71,7 +90,6 @@ for i in range(NUM_STUDENTS):
             user_values)
         user_values = []
 
-        #flush remaining
         batch_insert(user_file, "Students",
             ["student_id","user_id","major"],
             student_values)
@@ -85,11 +103,13 @@ for i in range(NUM_LECTURERS):
         f"({user_id}, '{name}', 'lecturer{i}@school.com', 'pass', 'lecturer', NOW())"
     )
     lecturer_values.append(
-        f"({user_id}, {user_id}, '{fake.word()}')"
+        f"({lecturer_id}, {user_id}, '{random.choice(DEPARTMENTS)}')"
     )
 
-    lecturer_ids.append(user_id)
+    lecturer_ids.append(lecturer_id)
+    user_ids.append(user_id)
     user_id += 1
+    lecturer_id += 1
 
 #generate admins 
 for i in range(NUM_ADMINS):
@@ -99,16 +119,22 @@ for i in range(NUM_ADMINS):
         f"({user_id}, '{name}', 'admin{i}@school.com', 'pass', 'admin', NOW())"
     )
     admin_values.append(
-        f"({user_id}, {user_id}, 'high')"
+        f"({admin_id}, {user_id}, 'high')"
     )
 
-    admin_ids.append(user_id)
+    admin_ids.append(admin_id)
+    user_ids.append(user_id)
     user_id += 1
+    admin_id += 1
 
 #flush remaining
 batch_insert(user_file, "Users",
     ["user_id","user_name","user_email","user_password","user_role","created_at"],
     user_values)
+
+batch_insert(user_file, "Students",
+    ["student_id","user_id","major"],
+    student_values)
 
 batch_insert(user_file, "Lecturer_Course_Maintainers",
     ["employee_id","user_id","department"],
@@ -117,7 +143,6 @@ batch_insert(user_file, "Lecturer_Course_Maintainers",
 batch_insert(user_file, "Admins",
     ["admin_id","user_id","access_level"],
     admin_values)
-
 
 #2.generate courses
 print("-- COURSES", file=course_file)
@@ -160,7 +185,6 @@ for lecturer, count in lecturer_course_count.items():
         cid = random.choice(course_ids)
         print(f"UPDATE Course SET employee_id = {lecturer} WHERE course_id = {cid};", file=course_file)
 
-
 #3.generate enrollments
 #attempt method to remove possible duplicates 
 print("-- ENROLLMENTS", file=enrollment_file)
@@ -190,6 +214,7 @@ for sid in student_ids:
                 f"({sid}, {cid}, CURDATE(), 'enrolled')"
             )
             enrolled_set.add((sid, cid))
+
     #batch flush
     if len(enroll_values) >= BATCH_SIZE:
         batch_insert(enrollment_file, "Enrolled_In",
@@ -210,14 +235,12 @@ forum_id = 1
 thread_id = 1
 
 for cid in course_ids:
-    #forum_id is independent 
     forum_vals.append(
         f"({forum_id}, {cid}, 'Forum {cid}')"
     )
 
-    #create threads linked to correct forum_id
     for _ in range(5):  #5 threads per course
-        user = random.choice(student_ids)
+        user = random.choice(user_ids)  # fixed: uses user_ids not student_ids
         thread_vals.append(
             f"({thread_id}, {forum_id}, {user}, 'Title', 'Content', NOW(), NULL)"
         )
@@ -232,7 +255,6 @@ batch_insert(extra_file, "Discussion_Thread",
     ["thread_id","forum_id","author_id","title","content","created_at","parent_thread_id"],
     thread_vals)
 
-
 #5.assignments&submissions
 assignment_vals = []
 submission_vals = []
@@ -246,7 +268,6 @@ for cid in course_ids:
             f"({assignment_id}, {cid}, 'Assignment', 'Desc', CURDATE())"
         )
 
-        #submissions
         for sid in random.sample(student_ids, 20):
             submission_vals.append(
                 f"({submission_id}, {assignment_id}, {sid}, NOW(), 'file.pdf', {random.randint(50,100)}, 'Good')"
