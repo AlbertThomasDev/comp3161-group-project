@@ -1,8 +1,8 @@
 # Files
-users.sql
-courses.sql
-enrollments.sql
-extras.sql
+# users.sql
+# courses.sql
+# enrollments.sql
+# extras.sql
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
