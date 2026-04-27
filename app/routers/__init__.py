@@ -12,3 +12,6 @@ from .courses import courses_bp
 from .forums import forums_bp
 from .calendar import calendar_bp
 from .assignments import assignments_bp
+from .enrollment import enrollment_bp
+from .users import users_bp
+from .threads import threads_bp
