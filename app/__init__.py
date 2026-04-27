@@ -5,11 +5,11 @@ def create_app():
 
     # Import and register blueprints here
     from app.routers import auth_bp, courses_bp, calendar_bp, forums_bp, assignments_bp
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(courses_bp)
-    app.register_blueprint(calendar_bp)
-    app.register_blueprint(forums_bp)
-    app.register_blueprint(assignments_bp)
+    app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(courses_bp, url_prefix= "/courses")
+    app.register_blueprint(calendar_bp, url_prefix="/calendar")
+    app.register_blueprint(forums_bp, url_prefix="/forums")
+    app.register_blueprint(assignments_bp, url_prefix="/assignments")
 
     return app
 
