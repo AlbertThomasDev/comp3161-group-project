@@ -1,10 +1,10 @@
-from flask import Blueprint
+#from flask import Blueprint
 
-auth_bp = Blueprint('auth', __name__)
-courses_bp = Blueprint('courses', __name__)
-forums_bp = Blueprint('forums', __name__)
-calendar_bp = Blueprint('calendar', __name__)
-assignments_bp = Blueprint('assignments', __name__)
+#auth_bp = Blueprint('auth', __name__)
+#courses_bp = Blueprint('courses', __name__)
+#forums_bp = Blueprint('forums', __name__)
+#calendar_bp = Blueprint('calendar', __name__)
+#assignments_bp = Blueprint('assignments', __name__)
 
 # Import the routes here for blueprints
 from .auth import auth_bp
