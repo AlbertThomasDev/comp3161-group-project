@@ -1,37 +1,53 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
+from db import get_db
 
 forums_bp = Blueprint('forums', __name__)
 
-# View all forums
-@forums_bp.route("/forums")
-def view_forums():
-    print("\nViewing all forums")
-    return "<h1>Forums Page</h1><p>All discussion forums</p>"
+# Get all forums (courses with threads)
+@forums_bp.route('/', methods=['GET'])
+def get_forums():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT DISTINCT c.course_id, c.course_name
+        FROM Course c
+        JOIN Discussion_Thread d ON c.course_id = d.forum_id
+    """)
+
+    forums = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return jsonify(forums)
 
 
-# View threads for a course
-@forums_bp.route("/forums/<int:course_id>")
-def view_threads(course_id):
-    print(f"\nViewing threads for course {course_id}")
-    return f"<h1>Threads</h1><p>Threads for course {course_id}</p>"
+# Get a single forum (course info + thread count)
+@forums_bp.route('/<int:forum_id>', methods=['GET'])
+def get_forum(forum_id):
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
 
+    cursor.execute("""
+        SELECT course_id, course_name, course_code
+        FROM Course
+        WHERE course_id = %s
+    """, (forum_id,))
+    course = cursor.fetchone()
 
-# View a single thread
-@forums_bp.route("/forums/thread/<int:thread_id>")
-def view_thread(thread_id):
-    print(f"\nViewing thread {thread_id}")
-    return f"<h1>Thread {thread_id}</h1><p>Thread content here</p>"
+    cursor.execute("""
+        SELECT COUNT(*) AS thread_count
+        FROM Discussion_Thread
+        WHERE forum_id = %s AND parent_thread_id IS NULL
+    """, (forum_id,))
+    count = cursor.fetchone()
 
+    cursor.close()
+    db.close()
 
-# Create a new thread
-@forums_bp.route("/forums/create")
-def create_thread():
-    print("\nCreating a new thread")
-    return "<h1>Create Thread</h1><p>Thread created successfully</p>"
+    if course:
+        course['thread_count'] = count['thread_count']
+        return jsonify(course)
 
-
-# Reply to a thread
-@forums_bp.route("/forums/reply/<int:thread_id>")
-def reply_thread(thread_id):
-    print(f"\nReplying to thread {thread_id}")
-    return f"<h1>Reply</h1><p>Reply added to thread {thread_id}</p>"
+    return jsonify({"error": "Forum not found"}), 404
