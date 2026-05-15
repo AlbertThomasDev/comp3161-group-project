@@ -78,7 +78,7 @@ def register():
         major = data.get("major")
 
         #validate role
-        allowed = ("lecturer", "student")
+        allowed = ("lecturer", "student", "admin")
         if user_type not in allowed:
             return jsonify({"error": f"User must be one of {allowed}"}), 400
 
@@ -95,7 +95,7 @@ def register():
             VALUES (%s, %s, %s, %s, %s)
         """, (name, email, hashed_password, user_type, created_at))
 
-        user_id = cursor.lastrowid
+        user_id = cursor.lastrowid #gets user_id
 
         #Generate role-based email
         short_id = str(user_id)[-4:]  #last digits of user_id
@@ -121,20 +121,12 @@ def register():
 
             employee_id = f"{prefix}{new_num:06d}"
 
-            DEPARTMENTS = [
-                "Computer Science", "Mathematics", "Physics", "Engineering",
-                "Business", "Biology", "Chemistry", "Law", "Economics"
-            ]
-
-            if not department:
-                department = ramdom.choice(DEPARTMENTS)
-
             cursor.execute("""
                 INSERT INTO Lecturer_Course_Maintainers (employee_id, user_id, department)
                 VALUES (%s, %s, %s)
             """, (employee_id, user_id, department))
 
-        else:  #user is a student
+        if user_type == "student": 
             generated_email = f"student{short_id}@school.com"
             cursor.execute("""
                 UPDATE Users SET user_email = %s WHERE user_id = %s
@@ -144,43 +136,58 @@ def register():
             cursor.execute("SELECT MAX(student_id) AS max_id FROM Students")
             result = cursor.fetchone()
             prefix = "111"
-            start_suffix = 90001 
+            start_suffix = 90001
 
             if result["max_id"]:
                 last_id = str(result["max_id"])
-                last_num = int(last_id[3:])  
+                last_num = int(last_id[3:])
                 new_num = last_num + 1
             else:
                 new_num = start_suffix
 
             student_id = f"{prefix}{new_num:05d}"
 
-            #Random Major
-            MAJORS = [
-                "Computer Science", "Information Technology", "Software Engineering",
-                "Electrical Engineering", "Mechanical Engineering", "Civil Engineering",
-                "Business Administration", "Accounting", "Economics", "Mathematics",
-                "Physics", "Biology", "Chemistry", "Psychology", "Law"
-            ]
-            
-            #if major not specified one will be chosen
-            if not major:
-                major = random.choice(MAJORS)
-
             #Insert into student table
             cursor.execute("""
                 INSERT INTO Students (student_id, user_id, major)
                 VALUES (%s, %s, %s)
             """, (student_id, user_id, major))
+        else:
+            generated_email = f"admin{short_id}@school.com"
+            cursor.execute("""
+                UPDATE Users SET user_email = %s WHERE user_id = %s
+            """, (generated_email, user_id))
+
+            # generate lecturer admin_id
+            cursor.execute("SELECT MAX(admin_id) AS max_id FROM Admin")
+            result = cursor.fetchone()
+            prefix = "333"
+            start_suffix = 1
+
+            if result["max_id"]:
+                last_id = str(result["max_id"])
+                last_num = int(last_id[3:])
+                new_num = last_num + 1
+            else:
+                new_num = start_suffix
+
+            admin_id = f"{prefix}{new_num:d}"
+
+            access_level = 'high'
+
+            #Insert into admin table
+            cursor.execute("""
+                INSERT INTO Admin (admin_id, user_id, access_level)
+                VALUES (%s, %s, %s)
+            """, (admin_id, user_id, access_level))
 
         db.commit()
         cursor.close()
         db.close()
         return jsonify({
-            "message": f"You've successfully registered! Your ID Number is {user_id}",
+            "message": f"You've successfully registered!",
         }), 201
 
     except Exception as e:
         db.rollback()
         return jsonify({"error": str(e)}), 500
-        
