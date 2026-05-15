@@ -52,8 +52,8 @@ CREATE TABLE Enrolled_In (
     date_enrolled DATE,
     enroll_status ENUM('enrolled', 'completed', 'dropped') DEFAULT 'enrolled',
     PRIMARY KEY (student_id, course_id),
-    FOREIGN KEY (student_id) REFERENCES Students(student_id),
-    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE
 );
 
 -- Forums and Threads
@@ -61,20 +61,20 @@ CREATE TABLE Discussion_Forum (
     forum_id INT AUTO_INCREMENT PRIMARY KEY,
     course_id INT NOT NULL,
     title VARCHAR(100) NOT NULL,
-    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+    FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Discussion_Thread (
     thread_id INT AUTO_INCREMENT PRIMARY KEY,
     forum_id INT NOT NULL,
     author_id INT NOT NULL,
-    title VARCHAR(100) NOT NULL,
+    title VARCHAR(100) DEFAULT NULL,
     content TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     parent_thread_id INT DEFAULT NULL,
-    FOREIGN KEY (forum_id) REFERENCES Discussion_Forum(forum_id),
-    FOREIGN KEY (author_id) REFERENCES Users(user_id),
-    FOREIGN KEY (parent_thread_id) REFERENCES Discussion_Thread(thread_id)
+    FOREIGN KEY (forum_id) REFERENCES Discussion_Forum(forum_id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (parent_thread_id) REFERENCES Discussion_Thread(thread_id) ON DELETE CASCADE
 );
 
 -- Assignments and Submissions
@@ -84,7 +84,7 @@ CREATE TABLE Assignment (
     title VARCHAR(100) NOT NULL,
     assignment_description TEXT,
     due_date DATE,
-    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+    FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Submission (
@@ -95,8 +95,8 @@ CREATE TABLE Submission (
     file_path VARCHAR(255),
     grade DECIMAL(5,2),
     feedback TEXT,
-    FOREIGN KEY (assignment_id) REFERENCES Assignment(assignment_id),
-    FOREIGN KEY (student_id) REFERENCES Students(student_id)
+    FOREIGN KEY (assignment_id) REFERENCES Assignment(assignment_id) ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
 
 -- Course Content
@@ -104,7 +104,7 @@ CREATE TABLE Section (
     section_id INT AUTO_INCREMENT PRIMARY KEY,
     course_id INT NOT NULL,
     title VARCHAR(100) NOT NULL,
-    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+    FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Section_Item (
@@ -116,8 +116,8 @@ CREATE TABLE Section_Item (
     section_url VARCHAR(255),
     item_order INT,
     assignment_id INT DEFAULT NULL,
-    FOREIGN KEY (section_id) REFERENCES Section(section_id),
-    FOREIGN KEY (assignment_id) REFERENCES Assignment(assignment_id)
+    FOREIGN KEY (section_id) REFERENCES Section(section_id) ON DELETE CASCADE,
+    FOREIGN KEY (assignment_id) REFERENCES Assignment(assignment_id) ON DELETE CASCADE
 );
 
 -- Calendar
@@ -128,5 +128,5 @@ CREATE TABLE Calendar_Event (
     event_description TEXT,
     event_date DATE NOT NULL,
     event_type ENUM('assignment', 'lecture', 'exam') NOT NULL,
-    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+    FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE
 );
