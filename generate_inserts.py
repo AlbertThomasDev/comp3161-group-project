@@ -284,6 +284,123 @@ batch_insert(extra_file, "Submission",
     ["submission_id","assignment_id","student_id","submission_date","file_path","grade","feedback"],
     submission_vals)
 
+#6.sections + section items
+section_vals = []
+section_item_vals = []
+
+section_id = 1
+item_id = 1
+
+SECTION_NAMES = [
+    "Introduction",
+    "Lecture Notes",
+    "Assignments",
+    "Labs",
+    "Resources"
+]
+
+ITEM_TYPES = ["link", "file", "slides"]
+
+for cid in course_ids:
+
+    # 2-4 sections per course
+    num_sections = random.randint(2, 4)
+
+    for _ in range(num_sections):
+
+        section_title = random.choice(SECTION_NAMES)
+
+        section_vals.append(
+            f"({section_id}, {cid}, '{section_title}')"
+        )
+
+        # 3-5 items per section
+        num_items = random.randint(3, 5)
+
+        for order in range(1, num_items + 1):
+
+            item_type = random.choice(ITEM_TYPES)
+
+            title = fake.sentence(nb_words=3).replace("'", "''")
+
+            if item_type == "link":
+                file_path = "NULL"
+                section_url = f"'https://example.com/resource/{item_id}'"
+
+            else:
+                file_path = f"'/files/resource_{item_id}.pdf'"
+                section_url = "NULL"
+
+            section_item_vals.append(
+                f"""(
+                    {item_id},
+                    {section_id},
+                    '{title}',
+                    '{item_type}',
+                    {file_path},
+                    {section_url},
+                    {order},
+                    NULL
+                )"""
+            )
+
+            item_id += 1
+
+        section_id += 1
+
+batch_insert(extra_file, "Section",
+    ["section_id","course_id","title"],
+    section_vals)
+
+batch_insert(extra_file, "Section_Item",
+    ["item_id","section_id","title","item_type",
+     "file_path","section_url","item_order","assignment_id"],
+    section_item_vals)
+
+
+#7.calendar events
+calendar_vals = []
+
+event_id = 1
+
+EVENT_TYPES = ["assignment", "lecture", "exam"]
+
+for cid in course_ids:
+
+    # 2-3 events per course
+    num_events = random.randint(2, 3)
+
+    for _ in range(num_events):
+
+        title = fake.sentence(nb_words=4).replace("'", "''")
+        description = fake.text(max_nb_chars=100).replace("'", "''")
+
+        month = random.randint(1, 12)
+        day = random.randint(1, 28)
+
+        event_date = f"2025-{month:02}-{day:02}"
+
+        event_type = random.choice(EVENT_TYPES)
+
+        calendar_vals.append(
+            f"""(
+                {event_id},
+                {cid},
+                '{title}',
+                '{description}',
+                '{event_date}',
+                '{event_type}'
+            )"""
+        )
+
+        event_id += 1
+
+batch_insert(extra_file, "Calendar_Event",
+    ["event_id","course_id","title",
+     "event_description","event_date","event_type"],
+    calendar_vals)
+
+
 #close files
 user_file.close()
 course_file.close()
