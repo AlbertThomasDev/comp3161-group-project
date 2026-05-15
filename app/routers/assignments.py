@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session, send_file
-from app.database import get_db
+from db import get_db
 
 assignments_bp = Blueprint('assignments', __name__)
 
@@ -181,14 +181,8 @@ def download_assignments(student_id):
     #Verify if they should download assignment
     if not lec_teaches(cursor,lecturer_id,sub["course_id"]):
         return jsonify({"error":"Unauthorized"}), 403
-    
-    #download the submission
-    ASSIGNMENT_FD = os.getcwd()
-    fd_path = os.path.join(ASSIGNMENT_FD, sub["file_path"])
 
-    if not os.path.exists(fd_path):
-        return jsonify({"error": "File not found"})
-    return send_file(fd_path, as_attachment=True,download_name=os.path.basename(fd_path))
+    return send_file(fd_path, as_attachment=True)
 
 #Submit a grade
 @assignments_bp.route("/submissions/<int:submission_id>/grade", methods=['PUT'])

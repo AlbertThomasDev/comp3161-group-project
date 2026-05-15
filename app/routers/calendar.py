@@ -283,6 +283,7 @@ def delete_event(event_id):
 
 	course_id = event.get('course_id')
 
+	#authorization check
 	cursor.execute("SELECT a.admin_id FROM Admins a WHERE a.user_id = %s", (requester_id,))
 	admin = cursor.fetchone()
 	cursor.execute("SELECT l.employee_id FROM Lecturer_Course_Maintainers l WHERE l.user_id = %s", (requester_id,))
