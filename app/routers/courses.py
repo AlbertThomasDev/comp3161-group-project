@@ -64,4 +64,27 @@ def get_student_courses(student_id):
     cursor.close()
     db.close()
 
+    return jsonify(courses) 
+
+#get courses taught by lecturer
+@courses_bp.route('/lecturer/<int:employee_id>', methods=['GET'])
+def get_courses_by_lecturer(employee_id):
+
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT
+            c.course_id,
+            c.course_name,
+            c.course_code
+        FROM Course c
+        WHERE c.employee_id = %s
+    """, (employee_id,))
+
+    courses = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
     return jsonify(courses)
