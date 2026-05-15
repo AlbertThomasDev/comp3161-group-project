@@ -127,7 +127,7 @@ def register():
             ]
 
             if not department:
-                department = ramdom.choice(DEPARTMENTS)
+                department = random.choice(DEPARTMENTS)
 
             cursor.execute("""
                 INSERT INTO Lecturer_Course_Maintainers (employee_id, user_id, department)
