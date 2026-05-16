@@ -2,7 +2,7 @@
 #file should be able to handle getting threads for a forum, creating a thread, reply to thread (nested), and getting thread with replies (possible tree)
 
 from flask import Blueprint, request, jsonify #necessary import
-from db import get_db #necessary import 
+from app.database import get_db #necessary import 
 
 threads_bp = Blueprint('threads', __name__)
 
