@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from db import get_db
+from app.database import get_db
 from datetime import datetime
 
 calendar_bp = Blueprint('calendar', __name__)
