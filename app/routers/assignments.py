@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session, send_file
-from db import get_db
+from app.database import get_db
 
 assignments_bp = Blueprint('assignments', __name__)
 
