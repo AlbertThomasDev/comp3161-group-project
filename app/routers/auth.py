@@ -126,7 +126,7 @@ def register():
                 VALUES (%s, %s, %s)
             """, (employee_id, user_id, department))
 
-        if user_type == "student": 
+        elif user_type == "student": 
             generated_email = f"student{short_id}@school.com"
             cursor.execute("""
                 UPDATE Users SET user_email = %s WHERE user_id = %s
@@ -159,7 +159,7 @@ def register():
             """, (generated_email, user_id))
 
             # generate lecturer admin_id
-            cursor.execute("SELECT MAX(admin_id) AS max_id FROM Admin")
+            cursor.execute("SELECT MAX(admin_id) AS max_id FROM Admins")
             result = cursor.fetchone()
             prefix = "333"
             start_suffix = 1
@@ -177,7 +177,7 @@ def register():
 
             #Insert into admin table
             cursor.execute("""
-                INSERT INTO Admin (admin_id, user_id, access_level)
+                INSERT INTO Admins (admin_id, user_id, access_level)
                 VALUES (%s, %s, %s)
             """, (admin_id, user_id, access_level))
 
