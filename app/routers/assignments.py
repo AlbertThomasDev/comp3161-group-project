@@ -234,3 +234,17 @@ def submit_grade(submission_id):
     db.commit()
     return jsonify({"message":"Grade successfully added"}), 200
 
+#Compute a student's final grade
+@assignments_bp.route("/<int:student_id>/finalgrade", methods=['GET'])
+def get_finalgrade(student_id):
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT AVG(grade) as avg_grade
+        FROM Submission
+        WHERE student_id = %s AND grade IS NOT NULL
+    """, (student_id,))
+    stdt_grade = cursor.fetchone()
+
+    return jsonify({"Student's Final Grade": stdt_grade["avg_grade"] }), 200
