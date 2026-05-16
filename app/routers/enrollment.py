@@ -2,7 +2,7 @@
 #route to handle getting courses for a student, getting members of a course, and enrolling a student 
 
 from flask import Blueprint, request, jsonify #necessary import
-from db import get_db #necessary import
+from app.database import get_db #necessary import
 
 enrollment_bp = Blueprint('enrollment', __name__)
 
