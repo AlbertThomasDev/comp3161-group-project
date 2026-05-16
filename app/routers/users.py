@@ -3,7 +3,7 @@
 #file should handle getting all users. getting single users, getting lecturers, and getting students 
 
 from flask import Blueprint, jsonify #necessary import 
-from db import get_db #necessary import 
+from app.database import get_db #necessary import 
 
 users_bp = Blueprint('users', __name__)
 
