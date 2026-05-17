@@ -67,14 +67,26 @@ def reply_thread():
     parent_thread_id = data.get('parent_thread_id')
 
     db = get_db()
-    cursor = db.cursor()
+    cursor = db.cursor(dictionary=True)
 
     try:
+        # Get parent thread title
+        cursor.execute("""
+            SELECT title FROM Discussion_Thread
+            WHERE thread_id = %s
+        """, (parent_thread_id,))
+        parent = cursor.fetchone()
+
+        if not parent:
+            return jsonify({"error": "Parent thread not found"}), 404
+
+        parent_title = parent["title"] if parent["title"] else None
+
         cursor.execute("""
             INSERT INTO Discussion_Thread
             (forum_id, author_id, title, content, created_at, parent_thread_id)
-            VALUES (%s, %s, NULL, %s, NOW(), %s)
-        """, (forum_id, author_id, content, parent_thread_id))
+            VALUES (%s, %s, %s, %s, NOW(), %s)
+        """, (forum_id, author_id, parent_title, content, parent_thread_id))
 
         db.commit()
         return jsonify({"message": "Reply added"}), 201
@@ -84,7 +96,7 @@ def reply_thread():
 
     finally:
         cursor.close()
-        db.close() 
+        db.close()
 
 #get a thread with replies 
 #tree structure

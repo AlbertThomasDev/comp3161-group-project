@@ -1,7 +1,9 @@
 from flask import Flask
+import os
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = os.getenv("SECRET_KEY")
 
     # Import and register blueprints here
     from app.routers import (auth_bp, courses_bp, calendar_bp, forums_bp, assignments_bp,  enrollment_bp,

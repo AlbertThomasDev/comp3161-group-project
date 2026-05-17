@@ -83,3 +83,23 @@ def get_lecturers():
     db.close()
 
     return jsonify(lecturers)
+
+
+#get all admins
+@users_bp.route('/admins', methods=['GET'])
+def get_admins():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT a.admin_id, u.user_name, u.user_email
+        FROM admins a
+        JOIN users u ON a.user_id = u.user_id
+    """)
+
+    admins = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return jsonify(admins)

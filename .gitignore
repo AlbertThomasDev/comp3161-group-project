@@ -3,6 +3,7 @@
 # courses.sql
 # enrollments.sql
 # extras.sql
+secret_key_generator.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

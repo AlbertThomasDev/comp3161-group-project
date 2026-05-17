@@ -40,6 +40,14 @@ def login():
             JOIN Lecturer_Course_Maintainers l ON u.user_id = l.user_id
             WHERE l.employee_id = %s
         """
+    elif user_input_id.startswith("333"):  # Admin
+        role = "admin"
+        query = """
+            SELECT u.user_id, u.user_password, u.user_role, u.user_name
+            FROM Users u
+            JOIN admins a ON u.user_id = a.user_id
+            WHERE a.admin_id = %s
+        """
     else:
         return jsonify({"error": "Invalid input"}), 400
 
@@ -60,6 +68,7 @@ def login():
 
     return jsonify({
         "message": f"Welcome back {user['user_name']}!",
+        "role": user["user_role"],
     }), 200
     
 #Users can register
@@ -71,123 +80,112 @@ def register():
         data = request.get_json()
 
         name = data.get("name")
-        email = data.get("email")
         password = data.get("password")
-        user_type = data.get("user_type")   # lecturer or student
+        user_type = data.get("user_type")
         department = data.get("department")
         major = data.get("major")
 
-        #validate role
         allowed = ("lecturer", "student", "admin")
         if user_type not in allowed:
             return jsonify({"error": f"User must be one of {allowed}"}), 400
 
-        #hash password
-        hashed_password = hash_password(password)  
-
+        hashed_password = hash_password(password)
         created_at = datetime.now()
 
         db.start_transaction()
 
-        #Insert into Users table
         cursor.execute("""
             INSERT INTO Users (user_name, user_email, user_password, user_role, created_at)
             VALUES (%s, %s, %s, %s, %s)
-        """, (name, email, hashed_password, user_type, created_at))
+        """, (name, "placeholder", hashed_password, user_type, created_at))
 
-        user_id = cursor.lastrowid #gets user_id
-
-        #Generate role-based email
-        short_id = str(user_id)[-4:]  #last digits of user_id
+        user_id = cursor.lastrowid
+        short_id = str(user_id)[-4:]
 
         if user_type == "lecturer":
             generated_email = f"lecturer{short_id}@school.com"
-            cursor.execute("""
-                UPDATE Users SET user_email = %s WHERE user_id = %s
-            """, (generated_email, user_id))
+            cursor.execute("UPDATE Users SET user_email = %s WHERE user_id = %s", (generated_email, user_id))
+            cursor.fetchall()  # consume update results
 
-            # generate lecturer employee_id
-            cursor.execute("SELECT MAX(employee_id) AS max_id FROM Lecturer_Course_Maintainers")
+            cursor.execute("SELECT MAX(CAST(SUBSTRING(employee_id, 4) AS UNSIGNED)) AS max_num FROM Lecturer_Course_Maintainers")
             result = cursor.fetchone()
-            prefix = "222"
-            start_suffix = 1
 
-            if result["max_id"]:
-                last_id = str(result["max_id"])
-                last_num = int(last_id[3:])
-                new_num = last_num + 1
-            else:
-                new_num = start_suffix
-
-            employee_id = f"{prefix}{new_num:06d}"
+            new_num = (result["max_num"] + 1) if result["max_num"] else 1
+            employee_id = f"222{new_num:06d}"
 
             cursor.execute("""
                 INSERT INTO Lecturer_Course_Maintainers (employee_id, user_id, department)
                 VALUES (%s, %s, %s)
             """, (employee_id, user_id, department))
+            cursor.fetchall()
 
-        elif user_type == "student": 
+            db.commit()
+            return jsonify({
+                "message": "You've successfully registered!",
+                "employee_id": employee_id,
+                "role": user_type
+            }), 201
+
+        elif user_type == "student":
             generated_email = f"student{short_id}@school.com"
-            cursor.execute("""
-                UPDATE Users SET user_email = %s WHERE user_id = %s
-            """, (generated_email, user_id))
+            cursor.execute("UPDATE Users SET user_email = %s WHERE user_id = %s", (generated_email, user_id))
+            cursor.fetchall()  # consume update results
 
-            #generate student_id 
-            cursor.execute("SELECT MAX(student_id) AS max_id FROM Students")
+            cursor.execute("SELECT MAX(CAST(SUBSTRING(student_id, 4) AS UNSIGNED)) AS max_num FROM Students")
             result = cursor.fetchone()
-            prefix = "111"
-            start_suffix = 90001
 
-            if result["max_id"]:
-                last_id = str(result["max_id"])
-                last_num = int(last_id[3:])
-                new_num = last_num + 1
-            else:
-                new_num = start_suffix
+            new_num = (result["max_num"] + 1) if result["max_num"] else 90001
+            student_id = f"111{new_num:05d}"
 
-            student_id = f"{prefix}{new_num:05d}"
-
-            #Insert into student table
             cursor.execute("""
                 INSERT INTO Students (student_id, user_id, major)
                 VALUES (%s, %s, %s)
             """, (student_id, user_id, major))
-        else:
+            cursor.fetchall()
+
+            db.commit()
+            return jsonify({
+                "message": "You've successfully registered!",
+                "student_id": student_id,
+                "role": user_type
+            }), 201
+
+        else:  # admin
+            print("REACHED ADMIN BRANCH")
             generated_email = f"admin{short_id}@school.com"
-            cursor.execute("""
-                UPDATE Users SET user_email = %s WHERE user_id = %s
-            """, (generated_email, user_id))
+            cursor.execute("UPDATE Users SET user_email = %s WHERE user_id = %s", (generated_email, user_id))
+            cursor.fetchall()  # consume update results
 
-            # generate lecturer admin_id
-            cursor.execute("SELECT MAX(admin_id) AS max_id FROM Admins")
+            cursor.execute("SELECT MAX(CAST(SUBSTRING(admin_id, 4) AS UNSIGNED)) AS max_num FROM admins")
             result = cursor.fetchone()
-            prefix = "333"
-            start_suffix = 1
+            print(f"MAX RESULT: {result}")
 
-            if result["max_id"]:
-                last_id = str(result["max_id"])
-                last_num = int(last_id[3:])
-                new_num = last_num + 1
-            else:
-                new_num = start_suffix
+            new_num = (result["max_num"] + 1) if result["max_num"] else 1
+            admin_id = f"333{new_num:06d}"
+            print(f"GENERATED ADMIN ID: {admin_id}")
 
-            admin_id = f"{prefix}{new_num:d}"
-
-            access_level = 'high'
-
-            #Insert into admin table
             cursor.execute("""
-                INSERT INTO Admins (admin_id, user_id, access_level)
+                INSERT INTO admins (admin_id, user_id, access_level)
                 VALUES (%s, %s, %s)
-            """, (admin_id, user_id, access_level))
+            """, (admin_id, user_id, "high"))
+            cursor.fetchall()
+            print("ADMIN INSERT DONE")
 
-        db.commit()
-        cursor.close()
-        db.close()
-        return jsonify({
-            "message": f"You've successfully registered!",
-        }), 201
+            db.commit()
+            return jsonify({
+                "message": "You've successfully registered!",
+                "admin_id": admin_id,
+                "role": user_type
+            }), 201
 
     except Exception as e:
         db.rollback()
         return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
+
+    """
+    Fixed admin and lecturer table not being filled after a new user
+    is created. 
+    """
