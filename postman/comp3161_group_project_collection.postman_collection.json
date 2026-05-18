@@ -1,0 +1,1088 @@
+{
+  "info": {
+    "_postman_id": "766c763f-6efe-4f9b-991f-a5c7e68a5315",
+    "name": "comp3161_group_project_collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53192152",
+    "_collection_link": "https://go.postman.co/collection/53192152-766c763f-6efe-4f9b-991f-a5c7e68a5315?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Student Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": \"111100007\",\r\n    \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/auth/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Lecturer Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": \"222000046\",\r\n    \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/auth/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": \"333000001\",\r\n    \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/auth/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Student Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"password\": \"password123\",\r\n    \"user_type\": \"student\",\r\n    \"major\": \"Computer Science\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/auth/register",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Lecturer Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Jane Smith\",\r\n    \"password\": \"password123\",\r\n    \"user_type\": \"lecturer\",\r\n    \"department\": \"Computing\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/auth/register",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Admin 21\",\r\n    \"password\": \"password123\",\r\n    \"user_type\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/auth/register",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Calendar",
+      "item": [
+        {
+          "name": "1. Get all calendar events for a course ",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/calendar/course/3",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "calendar",
+                "course",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. POST create calendar event for a course",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"title\": \"Protect\",\r\n        \"description\": \"This is the new description for the new event\",\r\n        \"event_date\": \"2025-05-13\",\r\n        \"event_type\": \"assignment\",\r\n        \"requester_id\": \"100138\"        \r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/calendar/course/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "calendar",
+                "course",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. GET all calendar events for all courses a student is enrolled in",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/calendar/student/111000001",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "calendar",
+                "student",
+                "111000001"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. GET events for a student on a specific date",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/calendar/student/111000001/date/2025-02-10",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "calendar",
+                "student",
+                "111000001",
+                "date",
+                "2025-02-10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. GET events on a specific date for a specific course",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/calendar/date/2025-02-10/course/89",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "calendar",
+                "date",
+                "2025-02-10",
+                "course",
+                "89"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "6. PUT update a calendar event",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"event_date\": \"2025-02-11\",\r\n    \"requester_id\": \"100138\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/calendar/221",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "calendar",
+                "221"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "7. DELETE an event",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"requester_id\": 100138\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/calendar/222",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "calendar",
+                "222"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "1. Get All Courses",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": \"222000001\",\r\n    \"password\": \"password123\"\r\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/courses/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "courses",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get courses a student is enrolled in",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/courses/student/111000001",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "courses",
+                "student",
+                "111000001"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Get courses taught by lecturer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/courses/lecturer/222000071",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "courses",
+                "lecturer",
+                "222000071"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get A Single Course",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/courses/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "courses",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Enrollments",
+      "item": [
+        {
+          "name": "1. Enroll a student in course",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"student_id\": \"111100007\",\r\n    \"course_id\": \"25\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/enrollment/enroll",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "enrollment",
+                "enroll"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get members of a course",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"student_id\": \"111100007\",\r\n    \"course_id\": \"1\"\r\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/enrollment/course/1/members",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "enrollment",
+                "course",
+                "1",
+                "members"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Forums",
+      "item": [
+        {
+          "name": "1. Get all forums (courses with threads)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"student_id\": \"111100007\",\r\n    \"course_id\": \"1\"\r\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/forums/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "forums",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get a single forum (course info + thread count)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/forums/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "forums",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Threads",
+      "item": [
+        {
+          "name": "1. Get threads for a forum",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/threads/forum/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "threads",
+                "forum",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Create a Thread",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"forum_id\": \"1\",\r\n    \"author_id\": \"100136\",\r\n    \"title\": \"New Thread Title\",\r\n    \"content\": \"This is the content for the thread.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/threads/create",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "threads",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Reply to thread",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"forum_id\": \"1\",\r\n    \"author_id\": \"99998\",\r\n    \"content\": \"This is the reply\",\r\n    \"parent_thread_id\": \"1001\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/threads/reply",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "threads",
+                "reply"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Get thread with replies",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"forum_id\": \"1\",\r\n    \"author_id\": \"99998\",\r\n    \"content\": \"This is the reply\",\r\n    \"parent_thread_id\": \"1001\"\r\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/threads/1001",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "threads",
+                "1001"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "1. Get all users",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"forum_id\": \"1\",\r\n    \"author_id\": \"99998\",\r\n    \"content\": \"This is the reply\",\r\n    \"parent_thread_id\": \"1001\"\r\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/users/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get a user by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/users/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get all students",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"forum_id\": \"1\",\r\n    \"author_id\": \"99998\",\r\n    \"content\": \"This is the reply\",\r\n    \"parent_thread_id\": \"1001\"\r\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/users/students",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "students"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Get all lecturers",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"forum_id\": \"1\",\r\n    \"author_id\": \"99998\",\r\n    \"content\": \"This is the reply\",\r\n    \"parent_thread_id\": \"1001\"\r\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/users/lecturers",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "lecturers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. Get all admins",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"forum_id\": \"1\",\r\n    \"author_id\": \"99998\",\r\n    \"content\": \"This is the reply\",\r\n    \"parent_thread_id\": \"1001\"\r\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/users/admins",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "admins"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Assignments",
+      "item": [
+        {
+          "name": "1. POST Submit an assignment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "course_name",
+                  "value": "Course 21",
+                  "type": "text",
+                  "uuid": "7050be35-c9af-416e-ba54-61c02cca3e1e"
+                },
+                {
+                  "key": "assignment_name",
+                  "value": "Assignment",
+                  "type": "text",
+                  "uuid": "7aede558-ca4a-4772-b262-a983b0e3ffb2"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "12c47eba-2e51-4d1b-a058-09c05658c5dc",
+                  "value": null
+                },
+                {
+                  "key": "link",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "24382f6c-1eac-4ada-a949-33151c92dcd1"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/assignments/submit_assignment",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "assignments",
+                "submit_assignment"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. GET Lecturers can view submissions for assignments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/assignments/submissions/Assignment",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "assignments",
+                "submissions",
+                "Assignment"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. GET Download the assignment for a specific student",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/assignments/submissions/111100007/download/61",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "assignments",
+                "submissions",
+                "111100007",
+                "download",
+                "61"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. PUT Submit a grade",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"grade\": 85\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/assignments/submissions/12002/grade",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "assignments",
+                "submissions",
+                "12002",
+                "grade"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. GET Compute a student's final grade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/assignments/111100007/finalgrade",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "assignments",
+                "111100007",
+                "finalgrade"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
