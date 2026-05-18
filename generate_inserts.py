@@ -32,7 +32,10 @@ BATCH_SIZE = 1000 #performance control
 user_file = open("users.sql", "w", encoding="utf-8")
 course_file = open("courses.sql", "w", encoding="utf-8")
 enrollment_file = open("enrollments.sql", "w", encoding="utf-8")
-extra_file = open("extras.sql", "w", encoding="utf-8")
+forum_file = open("forums.sql", "w", encoding="utf-8")
+assignment_file = open("assignments.sql", "w", encoding="utf-8")
+section_file = open("sections.sql", "w", encoding="utf-8")
+calendar_file = open("calendar.sql", "w", encoding="utf-8")
 
 #batch insert helper
 def batch_insert(file, table, columns, values):
@@ -248,10 +251,10 @@ for cid in course_ids:
 
     forum_id += 1
 
-batch_insert(extra_file, "Discussion_Forum",
+batch_insert(forum_file, "Discussion_Forum",
     ["forum_id","course_id","title"], forum_vals)
 
-batch_insert(extra_file, "Discussion_Thread",
+batch_insert(forum_file, "Discussion_Thread",
     ["thread_id","forum_id","author_id","title","content","created_at","parent_thread_id"],
     thread_vals)
 
@@ -276,11 +279,11 @@ for cid in course_ids:
 
         assignment_id += 1
 
-batch_insert(extra_file, "Assignment",
+batch_insert(assignment_file, "Assignment",
     ["assignment_id","course_id","title","assignment_description","due_date"],
     assignment_vals)
 
-batch_insert(extra_file, "Submission",
+batch_insert(assignment_file, "Submission",
     ["submission_id","assignment_id","student_id","submission_date","file_path","grade","feedback"],
     submission_vals)
 
@@ -348,11 +351,11 @@ for cid in course_ids:
 
         section_id += 1
 
-batch_insert(extra_file, "Section",
+batch_insert(section_file, "Section",
     ["section_id","course_id","title"],
     section_vals)
 
-batch_insert(extra_file, "Section_Item",
+batch_insert(section_file, "Section_Item",
     ["item_id","section_id","title","item_type",
      "file_path","section_url","item_order","assignment_id"],
     section_item_vals)
@@ -395,7 +398,7 @@ for cid in course_ids:
 
         event_id += 1
 
-batch_insert(extra_file, "Calendar_Event",
+batch_insert(calendar_file, "Calendar_Event",
     ["event_id","course_id","title",
      "event_description","event_date","event_type"],
     calendar_vals)
@@ -405,6 +408,9 @@ batch_insert(extra_file, "Calendar_Event",
 user_file.close()
 course_file.close()
 enrollment_file.close()
-extra_file.close()
+forum_file.close()
+assignment_file.close()
+section_file.close()
+calendar_file.close()
 
 print("DONE generating optimized SQL files") #print statement
